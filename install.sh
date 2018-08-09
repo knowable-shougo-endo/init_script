@@ -34,11 +34,75 @@ CpPlistToLaunchAgent () {
   fi
 }
 
+# php
+InstallPhp() {
+  brew install php
+
+  if [ -z $(which php)  ]; then
+    echo 'php install failed'
+    return 1
+  fi
+
+  CpPlistToLaunchAgent 'php'
+  if [ $? -eq 1 ]; then
+    return 1
+  fi
+
+  # 自動起動設定から起動
+  launchctl load -w $(ls -1 $HOME_LAUNCH_AGENT_PATH | grep $1)
+
+
+  echo 'php install success'
+  echo $(php -v | head -n 1)
+  return 0
+}
+
 # nginx
+InstallNginx() {
+  brew install nginx
+
+  if [ -z $(which nginx)  ]; then
+    echo 'nginx install failed'
+    return 1
+  fi
+
+  CpPlistToLaunchAgent 'nginx'
+  if [ $? -eq 1 ]; then
+    return 1
+  fi
+
+  # 自動起動設定から起動
+  launchctl load -w $(ls -1 $HOME_LAUNCH_AGENT_PATH | grep $1)
+
+
+  echo 'nginx install success'
+  echo $(nginx -v)
+  return 0
+}
 
 # mysql
+InstallMysql() {
+  brew install mysql@5.7
 
-# php
+  if [ -z $(which mysql)  ]; then
+    echo 'mysql install failed'
+    return 1
+  fi
+
+  CpPlistToLaunchAgent 'mysql'
+  if [ $? -eq 1 ]; then
+    return 1
+  fi
+
+  # 自動起動設定から起動
+  launchctl load -w $(ls -1 $HOME_LAUNCH_AGENT_PATH | grep $1)
+
+
+  echo 'mysql install success'
+  echo $(mysql --version)
+  return 0
+}
+
 
 
 
@@ -60,16 +124,17 @@ InstallMemcache() {
     return 1
   fi
 
-  CpPlistToLaunchAgent memcached
+  CpPlistToLaunchAgent 'memcached'
   if [ $? -eq 1 ]; then
     return 1
   fi
 
-  # 自動起動設定に追加
+  # 自動起動設定から起動
   launchctl load -w $(ls -1 $HOME_LAUNCH_AGENT_PATH | grep $1)
 
 
   echo 'memcached install success'
+  echo $(memcached --version)
   return 0
 }
 
