@@ -67,6 +67,8 @@ InstallPhp() {
 
   echo 'php install success'
   echo $(php -v | head -n 1)
+  echo 'export PATH="/usr/local/opt/php/bin:$PATH"' >> ~/.bash_profile
+  echo 'export PATH="/usr/local/opt/php/sbin:$PATH"' >> ~/.bash_profile #php-fpm用
   return 0
 }
 
@@ -90,6 +92,7 @@ InstallNginx() {
 
   echo 'nginx install success'
   echo $(nginx -v)
+  echo 'export PATH="/usr/local/opt/nginx/bin:$PATH"' >> ~/.bash_profile
   return 0
 }
 
@@ -113,6 +116,7 @@ InstallMysql() {
 
   echo 'mysql install success'
   echo $(mysql --version)
+  echo 'export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"' >> ~/.bash_profile
   return 0
 }
 
@@ -148,6 +152,7 @@ InstallMemcache() {
 
   echo 'memcached install success'
   echo $(memcached --version)
+  echo 'export PATH="/usr/local/opt/memcached/bin:$PATH"' >> ~/.bash_profile
   return 0
 }
 
