@@ -31,7 +31,7 @@ CpPlistToLaunchAgent() {
     return 1
   fi
   local plist_filename=$(ls -1 $package_path | grep plist)
-  if [ -z $plist_path ]; then
+  if [ -z $plist_filename ]; then
     echo "plist_filename is empty"
     return 1
   fi
@@ -102,13 +102,13 @@ InstallMysql() {
     return 1
   fi
 
-  CpPlistToLaunchAgent 'mysql'
+  CpPlistToLaunchAgent 'mysql@5.7'
   if [ $? -eq 1 ]; then
     return 1
   fi
 
   # 自動起動設定から起動
-  launchctl load -w "$HOME_LAUNCH_AGENT_PATH/$(ls -1 $HOME_LAUNCH_AGENT_PATH | grep mysql)"
+  launchctl load -w "$HOME_LAUNCH_AGENT_PATH/$(ls -1 $HOME_LAUNCH_AGENT_PATH | grep mysql@5.7)"
 
 
   echo 'mysql install success'
