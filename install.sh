@@ -72,6 +72,26 @@ InstallPhp() {
   return 0
 }
 
+# composer
+InstallComposer() {
+  curl https://getcomposer.org/installer > composer-setup.php
+  php composer-setup.php --filename=composer
+  if [$? -eq 1]; then
+    echo 'composer setup failed'
+    return 1
+  fi
+
+  mv composer /usr/local/bin/composer
+  if [$? -eq 1]; then
+    echo 'composer command move failed'
+    echo 'please move composer to /usr/local/bin/'
+  fi
+
+  rm composer-setup.php
+  return 0
+}
+
+
 # nginx
 InstallNginx() {
   brew install nginx
@@ -172,6 +192,12 @@ if [ -z $(which php) ] || [ $debug_flag -eq 1 ]; then
   echo "------------------------------------"
   echo 'run php install'
   InstallPhp
+fi
+
+if [ -z $(which composer) ] || [ $debug_flag -eq 1 ]; then
+  echo "------------------------------------"
+  echo 'run composer install'
+  InstallComposer
 fi
 
 if [ -z $(which nginx) ] || [ $debug_flag -eq 1 ]; then
